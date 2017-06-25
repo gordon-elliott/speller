@@ -10,8 +10,8 @@ from random import sample
 
 
 WORDS_PER_TEST = 10
-TICK = u'\u2714'
-CROSS = u'\u2715'
+TICK = u'/'
+CROSS = u'X'
 REPETITIONS = 2
 
 # TODO: record and feedback misspellings
@@ -19,12 +19,16 @@ REPETITIONS = 2
 
 def setup_engine():
     engine = pyttsx.init(debug=True)
-    voices = [
+    available_voices = engine.getProperty('voices')
+    english_voices = [
         voice
-        for voice in engine.getProperty('voices')
+        for voice in available_voices
         if voice.name.startswith('english_rp')
     ]
-    english_voice = voices[0]
+    if english_voices:
+        english_voice = english_voices[0]
+    else:
+        english_voice = available_voices[0]
     engine.setProperty('voice', english_voice.id)
     engine.setProperty('rate', 120)
     return engine
